@@ -171,8 +171,11 @@ const dummyRecords = [
   },
 ];
 
-const Product = () => {
+const Product = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
+  // const [selectedProducts, setSelectedProducts] = useState([]); // State to store selected products
+  const [selectedProductCount, setSelectedProductCount] = useState(0); // State to store the count of selected products
+  const { incrementCounter, selectedProducts, setSelectedProducts } = props;
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -184,31 +187,45 @@ const Product = () => {
 
   const searchBarStyle = {
     marginTop: "20px",
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: '20px',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "20px",
   };
 
   const inputStyle = {
-    width: '300px', 
-    fontSize: '24px',
-    border: '1px solid black', 
-    borderRadius: '5px', 
-    padding: '10px', 
+    width: "300px",
+    fontSize: "24px",
+    border: "1px solid black",
+    borderRadius: "5px",
+    padding: "10px",
   };
 
+  const handleAddToCart = (product) => {
+    setSelectedProducts([...selectedProducts, product]);
+    setSelectedProductCount(selectedProductCount + 1);
+    incrementCounter();
+  };
+
+  const handleAddToCart1 = (product) => {
+    setSelectedProducts((prevSelectedProducts) => [
+      ...prevSelectedProducts,
+      product,
+    ]);
+    setSelectedProductCount(selectedProductCount + 1);
+    incrementCounter();
+  };
   return (
     <>
-    <div style={searchBarStyle}>
-    <input
-      type="text"
-      placeholder="Search products..."
-      value={searchTerm}
-      onChange={handleSearch}
-      style={inputStyle}
-    />
-    </div>
+      <div style={searchBarStyle}>
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={handleSearch}
+          style={inputStyle}
+        />
+      </div>
       <Grid container spacing={2} marginTop={2}>
         {filteredRecords.map((record) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={record.id}>
@@ -243,6 +260,7 @@ const Product = () => {
                 variant="contained"
                 color="primary"
                 style={{ marginTop: "8px", width: "80%" }}
+                onClick={() => handleAddToCart1(record)}
               >
                 Add to Cart
               </Button>
@@ -250,7 +268,7 @@ const Product = () => {
           </Grid>
         ))}
       </Grid>
-      </>
+    </>
   );
 };
 
