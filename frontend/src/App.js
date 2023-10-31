@@ -10,12 +10,13 @@ import Main from "./Pages/Main";
 import Product from "./Pages/Product";
 import HealthCare from "./Pages/HealthCare";
 import Cart from "./Pages/Cart";
+import deliveryAdd from "./Pages/Proceedtobuy/deliveryadd";
 
 function App() {
-  const [selectedProducts, setSelectedProducts] = useState([]); // Define selectedProducts state
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [counter, setCounter] = useState(0);
   const handleProductDelete = (productId) => {
-    // Remove the product with the specified productId from the selectedProducts state.
+ 
     const updatedProducts = selectedProducts.filter((product) => product.id !== productId);
     setSelectedProducts(updatedProducts);
     setCounter(counter - 1);
@@ -34,7 +35,12 @@ function App() {
         <Route path="/dashboard" element={<Dashboard counter={counter} />}>
           <Route path="main" element={<Main />} />
           <Route path="contact" element={<ContactUs />} />
-          <Route path="health" element={<HealthCare />} />
+          <Route path="health"  element={
+              <HealthCare
+                incrementCounter={incrementCounter}
+                selectedProducts={selectedProducts}
+                setSelectedProducts={setSelectedProducts}
+              />} />
           <Route
             path="product"
             element={
@@ -54,6 +60,7 @@ function App() {
               />
             }
           />
+           <Route path="deliveryadd" element={<deliveryAdd />} />
           <Route path="vetappointment" element={<VetAppointment />} />
         </Route>
       </Routes>

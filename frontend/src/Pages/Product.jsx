@@ -40,22 +40,15 @@ const dummyRecords = [
     image:
       "https://supertails.com/cdn/shop/products/61wJA-Ph8OL._SX679.jpg?v=1655873823",
     title: "Pedigree Chicken and Vegetables Adult Dry Dog Food (15kg)",
-    price: (
-      <p>
-        ₹2,890, MRP <s> ₹3,000</s>
-      </p>
-    ),
+    price: "MRP ₹2,890,"
+        
   },
   {
     id: 6,
     image:
       "https://supertails.com/cdn/shop/products/1_08336a68-44cd-431b-b95a-d08b1d839638_1.jpg?v=1696494837",
     title: "Drools Optimum Performance Adult Dog Dry Food (10kg)",
-    price: (
-      <p>
-        ₹1,359, MRP <s> ₹2,000</s>
-      </p>
-    ),
+    price: "MRP ₹1,359"
   },
   {
     id: 7,
@@ -63,55 +56,35 @@ const dummyRecords = [
       "https://supertails.com/cdn/shop/files/Supertails_1_c5b34d1c-b748-4549-a3b4-5ed7ab44a043_1800x1800.jpg?v=1696639138",
     title:
       "Whiskas Tuna in Jelly Meal Adult Cat Wet Food and Tuna Flavour Adult Cat Dry Food Combo",
-    price: (
-      <p>
-        ₹720, MRP <s> ₹799</s>
-      </p>
-    ),
+    price: "MRP ₹720"
   },
   {
     id: 8,
     image:
       "https://supertails.com/cdn/shop/products/Supertails_21_2_1800x1800.jpg?v=1696556687",
     title: "Me O Tuna Adult Cat Dry Food  (₹43/100g )",
-    price: (
-      <p>
-        ₹195, MRP <s> ₹299</s>
-      </p>
-    ),
+    price: "MRP ₹195"
   },
   {
     id: 9,
     image:
       "https://supertails.com/cdn/shop/products/Group529_1_1800x1800.jpg?v=1696496773",
     title: "Emily Pets Lemon Scented Cat Litter",
-    price: (
-      <p>
-        ₹699, MRP <s> ₹799</s>
-      </p>
-    ),
+    price: "MRP ₹699"
   },
   {
     id: 10,
     image:
       "https://supertails.com/cdn/shop/products/SUPERTAILS_2_6d90567e-5253-4cf4-83d7-b702783dca39_1800x1800.png?v=1696543619",
     title: "Intersand Unscented Odour Lock Calming Breeze Cat Litter",
-    price: (
-      <p>
-        ₹2,256, MRP <s>₹2,375</s>
-      </p>
-    ),
+    price: "MRP ₹2256"
   },
   {
     id: 11,
     image:
       "https://supertails.com/cdn/shop/products/Frame1-2022-06-15T112603.370_1_1_1800x1800.png?v=1684565322",
     title: "Pet Vogue Multi Level Puzzle Toy for Cats",
-    price: (
-      <p>
-        ₹349, MRP <s> ₹999</s>
-      </p>
-    ),
+    price: "MRP ₹349"
   },
   {
     id: 12,
@@ -119,55 +92,35 @@ const dummyRecords = [
       "https://supertails.com/cdn/shop/products/5-update-207544.png?v=1696536084",
     title:
       "Hiputee Scratching Post, Activity Tower, Plush Fur Fabric Hammock, Basket Lounger ,Sisal/Jute Covered Rope Tree for Kittens & Cats (Grey)",
-    price: (
-      <p>
-        ₹1109, MRP <s> ₹2,998</s>
-      </p>
-    ),
+    price: "MRP ₹1109"
   },
   {
     id: 13,
     image:
       "https://supertails.com/cdn/shop/products/Frame10898-679841_1800x1800.png?v=1696510082",
     title: "Fofos Avocado Treat Toy for Dogs",
-    price: (
-      <p>
-        ₹594, MRP <s> ₹675</s>
-      </p>
-    ),
+    price: "MRP ₹594"
   },
   {
     id: 14,
     image:
       "https://supertails.com/cdn/shop/products/61vwwkgg3SL1_1_1800x1800.jpg?v=1687498579",
     title: "Pet Vogue Bone Shaped Rubber chew Toy for Dogs",
-    price: (
-      <p>
-        ₹129, MRP <s> ₹299</s>
-      </p>
-    ),
+    price: "MRP ₹129"
   },
   {
     id: 15,
     image:
       "https://supertails.com/cdn/shop/products/supertails_29_1_1800x1800.png?v=1696530706",
     title: "Harry Potter Woofy Witch Bandana Dress For Dogs",
-    price: (
-      <p>
-        ₹129, MRP <s> ₹299</s>
-      </p>
-    ),
+    price: "MRP ₹129"
   },
   {
     id: 16,
     image:
       " https://supertails.com/cdn/shop/products/Frame1_77_1-149130_1800x1800.png?v=1696417955",
     title: "A Plus A Pets Feather Weight Harness & Leash Set for Dogs and Cats",
-    price: (
-      <p>
-        ₹746, MRP <s> ₹909</s>
-      </p>
-    ),
+    price: "MRP ₹746"
   },
 ];
 
@@ -201,20 +154,34 @@ const Product = (props) => {
     padding: "10px",
   };
 
-  const handleAddToCart = (product) => {
-    setSelectedProducts([...selectedProducts, product]);
-    setSelectedProductCount(selectedProductCount + 1);
-    incrementCounter();
-  };
-
   const handleAddToCart1 = (product) => {
+   
+    const extractPrice = (price) => {
+      if (typeof price === 'string') {
+        const matches = price.match(/₹([\d,]+)/);
+        if (matches) {
+          return parseFloat(matches[1].replace(/,/g, '')); 
+        }
+      }
+      return 0; 
+    };
+  
+  
+
+
+    // Extract and calculate the accurate price
+    const price = extractPrice(product.price);
+    
+  
     setSelectedProducts((prevSelectedProducts) => [
       ...prevSelectedProducts,
-      product,
+      { ...product, price: price },
     ]);
     setSelectedProductCount(selectedProductCount + 1);
     incrementCounter();
   };
+
+  
   return (
     <>
       <div style={searchBarStyle}>

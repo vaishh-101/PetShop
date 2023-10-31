@@ -1,35 +1,24 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('./db'); 
+const mongoose = require('mongoose');
 
-const ContactUs = sequelize.define('ContactUs', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
+const contactUsSchema = new mongoose.Schema({
   fullname: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   email: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   message: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
+    type: Date,
+    default: Date.now,
   },
-}, {
-  tableName: 'contactus', // Set the table name if it's different from the model name
-  timestamps: false, // If you don't want Sequelize to manage createdAt and updatedAt fields
-  freezeTableName: true,
 });
 
-// Sync the model with the database (create the table if it doesn't exist)
-ContactUs.sync();
+const ContactUs = mongoose.model('ContactUs', contactUsSchema);
 
 module.exports = ContactUs;

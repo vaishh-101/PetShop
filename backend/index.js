@@ -1,9 +1,19 @@
 const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
 const app = express();
 const UserRoute = require('./Routes/UserRoute');
 const ContactRouter = require('./Routes/ContactRoute')
-const sequelize = require("./models/db");
 const cors = require("cors");
+
+const PORT = process.env.PORT || 5000 
+async function connectToDB(){
+    const connection = mongoose.connect(process.env.MONGO_URI)
+    if(connection){
+        console.log('connected to mongoDB');
+    }
+}
+connectToDB();
 
 
 const options = {
@@ -12,6 +22,8 @@ const options = {
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
+
+
 
 app.use(cors(options));
 
@@ -25,7 +37,7 @@ app.get("/", function(req, res) {
   res.send("Hello");
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+
+app.listen(PORT, ()=>{
+  console.log('Server starter running on port', PORT);
+})

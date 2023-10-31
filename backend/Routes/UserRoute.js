@@ -1,11 +1,11 @@
-
 const express = require('express');
-const User = require('../models/User'); // Import the User model
 const UserRoute = express.Router();
+const User = require('../models/User'); // Import your User model
+
 // Get all users
 UserRoute.get('/users', async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await User.find();
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -17,8 +17,9 @@ UserRoute.get('/users', async (req, res) => {
 UserRoute.post('/users', async (req, res) => {
   try {
     const { fullname, username, password } = req.body;
-    const user = await User.create({ fullname, username, password });
-    res.json(user);
+    const user = new User({ fullname, username, password });
+    const savedUser = await user.save();
+    res.json(savedUser);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -31,16 +32,11 @@ UserRoute.patch('/users/:id', async (req, res) => {
     const { id } = req.params;
     const { fullname, username, password } = req.body;
 
-    const user = await User.findByPk(id);
+    const user = await User.findByIdAndUpdate(id, { fullname, username, password }, { new: true });
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-
-    user.fullname = fullname;
-    user.username = username;
-    user.password = password;
-
-    await user.save();
 
     res.json(user);
   } catch (error) {
@@ -54,12 +50,11 @@ UserRoute.delete('/users/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    const user = await User.findByPk(id);
+    const user = await User.findByIdAndRemove(id);
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-
-    await user.destroy();
 
     res.json({ message: 'User deleted successfully' });
   } catch (error) {

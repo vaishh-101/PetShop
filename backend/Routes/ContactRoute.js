@@ -1,27 +1,27 @@
 const express = require('express');
-const Contactrouter = express.Router();
-const ContactUs = require('../models/ContactUs'); // Import your ContactUs model
+const ContactRouter = express.Router();
+const Contact = require('../models/ContactUs');
 
-
-// Get all contactus records
-Contactrouter.get('/contactus', async (req, res) => {
+// Get all contact records
+ContactRouter.get('/contacts', async (req, res) => {
   try {
-    const contactUsRecords = await ContactUs.findAll();
-    res.json(contactUsRecords);
+    const contactRecords = await Contact.find();
+    res.json(contactRecords);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Create a new contactus record
-Contactrouter.post('/contactus', async (req, res) => {
+// Create a new contact record
+ContactRouter.post('/contacts', async (req, res) => {
   try {
     const { fullname, email, message } = req.body;
-    const newContactUsRecord = await ContactUs.create({ fullname, email, message });
-    res.status(201).json(newContactUsRecord);
+    const newContactRecord = new Contact({ fullname, email, message });
+    const savedContactRecord = await newContactRecord.save();
+    res.status(201).json(savedContactRecord);
   } catch (error) {
     res.status(400).json({ error: 'Bad request' });
   }
 });
 
-module.exports = Contactrouter;
+module.exports = ContactRouter;

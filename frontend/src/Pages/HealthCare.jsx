@@ -127,8 +127,11 @@ const dummyRecords1 = [
   },
 ];
 
-const HealthCare = () => {
+const HealthCare = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedProductCount, setSelectedProductCount] = useState(0); 
+  const { incrementCounter, selectedProducts, setSelectedProducts } = props;
+
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -152,6 +155,15 @@ const HealthCare = () => {
     border: '1px solid black', 
     borderRadius: '5px', 
     padding: '10px', 
+  };
+
+  const handleAddToCart1 = (product) => {
+    setSelectedProducts((prevSelectedProducts) => [
+      ...prevSelectedProducts,
+      product,
+    ]);
+    setSelectedProductCount(selectedProductCount + 1);
+    incrementCounter();
   };
 
   return (
@@ -199,6 +211,7 @@ const HealthCare = () => {
                 variant="contained"
                 color="primary"
                 style={{ marginTop: "8px", width: "80%" }}
+                onClick={() => handleAddToCart1(record)}
               >
                 Add to Cart
               </Button>
